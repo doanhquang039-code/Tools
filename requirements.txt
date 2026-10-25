@@ -1,0 +1,3 @@
+psutil
+wmi; sys_platform == "win32"
+pyinstaller
