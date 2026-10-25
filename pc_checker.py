@@ -128,6 +128,14 @@ def get_win_info():
     info["arch"]          = platform.machine()
     info["hostname"]      = socket.gethostname()
 
+    # Nhận diện chính xác Windows 11 (Build >= 22000 trong khi Registry ProductName vẫn giữ nhãn Windows 10)
+    try:
+        b_num = int(info.get("build", "0"))
+        if b_num >= 22000 and "Windows 10" in info.get("product_name", ""):
+            info["product_name"] = info["product_name"].replace("Windows 10", "Windows 11")
+    except:
+        pass
+
     try:
         ts = int(reg_get(hklm, nt_path, "InstallDate", "0"))
         info["install_date"] = datetime.datetime.fromtimestamp(ts).strftime("%d/%m/%Y")
@@ -160,8 +168,6 @@ def get_win_info():
             info["activation_status"] = "⏳  IN GRACE PERIOD"
         elif "unlicensed" in low:
             info["activation_status"] = "❌  UNLICENSED"
-        else:
-            info["activation_status"] = "❓  Unknown"
 
         if "kms machine" in low or "kms host" in low or "key management service" in low:
             info["license_type"] = "🔴  KMS Activated (possibly cracked)"
@@ -171,8 +177,6 @@ def get_win_info():
             info["license_type"] = "✅  Retail License"
         elif "volume" in low:
             info["license_type"] = "🟡  Volume License (Corporate)"
-        else:
-            info["license_type"] = "❓  Unknown"
 
         for line in raw.splitlines():
             ll = line.lower()
@@ -180,8 +184,43 @@ def get_win_info():
                 info["kms_server"] = line.strip()
                 break
     except Exception as e:
-        info["activation_status"] = f"⚠️  slmgr lỗi – chạy với quyền Admin"
-        info["activation_raw"]    = str(e)
+        info["activation_raw"] = str(e)
+
+    # ── Fallback via WMI SoftwareLicensingProduct (cực kỳ chính xác trên Win 11) ──
+    if info["activation_status"] == "Unknown" and WMI_AVAILABLE:
+        try:
+            c = wmi.WMI()
+            for p in c.SoftwareLicensingProduct():
+                if p.PartialProductKey and ("windows" in (p.Name or "").lower() or "operating system" in (p.Description or "").lower()):
+                    st = getattr(p, "LicenseStatus", 0)
+                    desc = (p.Description or "").lower()
+                    name = (p.Name or "").lower()
+
+                    if st == 1:
+                        info["activation_status"] = "✅  LICENSED"
+                    elif st == 2:
+                        info["activation_status"] = "⏳  IN GRACE PERIOD"
+                    elif st == 5:
+                        info["activation_status"] = "⚠️  NOTIFICATION MODE"
+                    else:
+                        info["activation_status"] = "❌  UNLICENSED"
+
+                    if "kms" in desc or "kms" in name:
+                        info["license_type"] = "🔴  KMS Activated (possibly cracked)"
+                    elif "oem" in desc or "oem" in name:
+                        info["license_type"] = "✅  OEM License (Pre-installed)"
+                    elif "retail" in desc or "retail" in name:
+                        info["license_type"] = "✅  Retail License"
+                    elif "volume" in desc:
+                        info["license_type"] = "🟡  Volume License (Corporate)"
+                    break
+        except:
+            pass
+
+    if info["activation_status"] == "Unknown":
+        info["activation_status"] = "❓  Unknown"
+    if info["license_type"] == "Unknown":
+        info["license_type"] = "❓  Unknown"
 
     # ── Windows Defender status ───────────────────────────────
     info["defender"] = "Unknown"
