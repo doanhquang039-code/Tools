@@ -19,7 +19,7 @@ if errorlevel 1 (
 )
 
 echo  [1/4] Installing dependencies...
-pip install psutil wmi pyinstaller --quiet --upgrade
+python -m pip install psutil wmi pyinstaller --quiet --upgrade
 if errorlevel 1 (
     echo  [ERROR] Failed to install dependencies
     pause
@@ -32,12 +32,10 @@ if exist "build" rmdir /s /q build
 if exist "*.spec" del /q *.spec
 
 echo  [3/4] Building executable...
-pyinstaller ^
+python -m PyInstaller ^
     --onefile ^
     --windowed ^
     --name "PC_Status_Checker" ^
-    --icon NONE ^
-    --add-data "." ^
     --hidden-import psutil ^
     --hidden-import wmi ^
     --hidden-import win32api ^
