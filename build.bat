@@ -38,6 +38,8 @@ python -m PyInstaller ^
     --name "PC_Status_Checker" ^
     --hidden-import psutil ^
     --hidden-import wmi ^
+    --hidden-import pythoncom ^
+    --hidden-import pywintypes ^
     --hidden-import win32api ^
     --hidden-import win32con ^
     --hidden-import winreg ^

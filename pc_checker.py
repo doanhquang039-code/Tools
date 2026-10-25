@@ -98,6 +98,11 @@ def wmi_get(cls, attr, idx=0, default="N/A"):
     if not WMI_AVAILABLE:
         return default
     try:
+        try:
+            import pythoncom
+            pythoncom.CoInitialize()
+        except:
+            pass
         c = wmi.WMI()
         return getattr(getattr(c, cls)()[idx], attr).strip() or default
     except:
@@ -512,10 +517,19 @@ class WinPanel(tk.Frame):
         for w in self._body.winfo_children():
             w.destroy()
         tk.Label(self._body,
-                 text="⏳ Đang kiểm tra bản quyền Windows…\n(slmgr có thể mất 15-25 giây)",
+                 text="⏳ Đang kiểm tra bản quyền Windows…\n(Đang đọc dữ liệu hệ thống)",
                  font=FONTS["body"], bg=C["bg"], fg=C["text2"]).pack(pady=50)
-        threading.Thread(target=lambda: self.after(
-            0, lambda d=get_win_info(): self._render(d)), daemon=True).start()
+
+        def _worker():
+            try:
+                import pythoncom
+                pythoncom.CoInitialize()
+            except:
+                pass
+            d = get_win_info()
+            self.after(0, lambda: self._render(d))
+
+        threading.Thread(target=_worker, daemon=True).start()
 
     def _render(self, d):
         for w in self._body.winfo_children():
@@ -796,9 +810,17 @@ class SystemPanel(tk.Frame):
         self._body = scrollable(self)
         tk.Label(self._body, text="⏳ Đang thu thập thông số phần cứng…",
                  font=FONTS["body"], bg=C["bg"], fg=C["text2"]).pack(pady=50)
-        threading.Thread(
-            target=lambda: self.after(0, lambda h=get_hardware(): self._render(h)),
-            daemon=True).start()
+
+        def _hw_worker():
+            try:
+                import pythoncom
+                pythoncom.CoInitialize()
+            except:
+                pass
+            h = get_hardware()
+            self.after(0, lambda: self._render(h))
+
+        threading.Thread(target=_hw_worker, daemon=True).start()
 
     def _render(self, hw):
         for w in self._body.winfo_children():

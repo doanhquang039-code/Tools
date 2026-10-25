@@ -3,7 +3,7 @@ from PyInstaller.utils.hooks import collect_all
 
 datas = []
 binaries = []
-hiddenimports = ['psutil', 'wmi', 'winreg']
+hiddenimports = ['psutil', 'wmi', 'pythoncom', 'pywintypes', 'winreg']
 tmp_ret = collect_all('psutil')
 datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 tmp_ret = collect_all('wmi')
