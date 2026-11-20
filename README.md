@@ -1,94 +1,69 @@
-# 🖥️ PC Status & License Checker
+# 💻 PC & Laptop Status Checker Pro
 
-> **Kiểm tra bản quyền Windows · Phát hiện phần mềm lậu · Thông số hệ thống**
+> **Kiểm tra Bản quyền Windows · Độ chai Pin Laptop · S.M.A.R.T Ổ cứng · Test Bàn phím & Chuột · Test Màn hình Điểm chết · Test Loa, Mic & Webcam**
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://python.org)
 [![Windows](https://img.shields.io/badge/Platform-Windows%2010%2F11-lightblue)](https://microsoft.com)
 [![License](https://img.shields.io/badge/License-MIT-green)]()
+
+Bộ công cụ Desktop Launcher kiểm tra toàn diện phần cứng, hệ điều hành và thiết bị ngoại vi chuyên dụng khi **mua bán, test máy cũ/mới, audit kỹ thuật**.
 
 ---
 
 ## 🚀 Cách dùng nhanh
 
 ### ⚡ Cách 1 — Chạy ngay không cần cài Python (Khuyên dùng)
-> Máy bất kỳ (Windows 10/11) chỉ cần tải repo về là chạy được ngay:
+> Máy bất kỳ (Windows 10/11) chỉ cần tải về là chạy:
 ```
-1. Tải về từ GitHub (Code → Download ZIP hoặc git clone)
-2. Mở thư mục dist → Double-click chạy PC_Status_Checker.exe
-   (hoặc chỉ cần click run.bat ngoài thư mục gốc, tool sẽ tự động khởi chạy)
+1. Vào thư mục dist/ → Chạy PC_Status_Checker.exe
+(hoặc click run.bat ngoài thư mục gốc)
 ```
 
 ### 🐍 Cách 2 — Chạy từ mã nguồn Python
 ```
-1. Cài đặt Python 3.8+ (tích chọn "Add python to PATH" khi cài)
-2. Double-click run.bat
+1. Cài Python 3.8+ (tích "Add python to PATH")
+2. Chạy run.bat (tự cài thư viện psutil, wmi nếu thiếu và khởi chạy app)
 ```
-> `run.bat` sẽ tự kiểm tra và cài đặt thư viện (`psutil`, `wmi`) nếu máy còn thiếu, sau đó khởi động app.
 
-### 🛠️ Cách 3 — Tự đóng gói (Build lại .exe)
+### 🛠️ Cách 3 — Đóng gói lại thành file .EXE độc lập
 ```
 1. Chạy build.bat
-2. Đợi vài chục giây, file mới sẽ nằm trong thư mục dist\PC_Status_Checker.exe
+2. File .exe mới sẽ nằm trong thư mục dist\PC_Status_Checker.exe
 ```
 
 ---
 
-## ✨ Tính năng
+## ✨ Danh sách 11 Chức năng Kiểm tra
 
-| Chức năng | Mô tả |
-|-----------|-------|
-| 🪟 **Bản quyền Windows** | Kiểm tra activation status, license type, phát hiện KMS crack |
+| Chức năng | Mô tả chi tiết |
+|-----------|----------------|
+| 🪟 **Bản quyền Windows** | Check Activation status, OEM / Retail / KMS, phát hiện crack bản quyền |
 | 🔍 **Phát hiện phần mềm lậu** | Quét tên & đường dẫn cài đặt, phát hiện activator/keygen/crack |
-| 🧩 **Phần mềm đã cài** | Danh sách đầy đủ, tìm kiếm, sort theo tên/publisher/ngày |
-| 📊 **Thông số hệ thống** | CPU · RAM · GPU · Mainboard · BIOS · Disk |
-| ⚙️ **Processes** | Top 250 process đang chạy, flag process crack |
-| 📋 **Xuất báo cáo** | Export `.txt` đầy đủ để gửi qua Zalo/Email |
+| 🔋 **Pin & Sạc Laptop** *(Mới)* | **Độ chai pin (% Wear Level)**, Dung lượng thiết kế vs Sạc đầy (mWh), Số lần sạc (Cycle Count), Xuất báo cáo Pin Windows Battery Report HTML |
+| 💾 **Sức khỏe Ổ cứng** *(Mới)* | **S.M.A.R.T NVMe / SSD / HDD**, Chuẩn giao tiếp BusType, Nhiệt độ ổ cứng, Giờ hoạt động (Power-On Hours), Độ hao mòn Wear % |
+| ⌨️ **Bàn phím & Chuột** *(Mới)* | **Bàn phím ảo trực quan**: bấm phím nào sáng phím đó, phát hiện liệt phím/kẹt nút; Test Click chuột Trái, Phải, Con lăn & Cuộn |
+| 🖥️ **Màn hình & Điểm chết** *(Mới)* | Đọc Độ phân giải & Tần số quét (Hz); **Dead Pixel Test Fullscreen** chuyển 9 màu (Đen, Trắng, Đỏ, Xanh lá, Xanh dương...) soi điểm chết & hở sáng IPS |
+| 🔊 **Loa, Mic & Webcam** *(Mới)* | **Test Loa Trái (Left) & Loa Phải (Right) độc lập**, mở nhanh Windows Sound Recorder & Camera Windows test webcam |
+| 📊 **Thông số hệ thống** | Chi tiết CPU, RAM, GPU, Mainboard, BIOS, Uptime |
+| 🧩 **Phần mềm đã cài** | Danh sách phần mềm đã cài, tìm kiếm nhanh theo tên & nhà sản xuất |
+| ⚙️ **Processes** | Top tiến trình ngốn CPU / RAM, gắn cờ process lạ |
+| 📋 **Xuất báo cáo .TXT** | Xuất báo cáo kiểm tra chi tiết để gửi Zalo / Email khi giao dịch máy |
 
 ---
 
-## 🔍 Phát hiện những gì?
-
-**Windows lậu:**
-- KMS Activation (KMSpico, KMSAuto, HWID, Re-Loader, v.v.)
-- Notification Mode / Unlicensed
-- KMS Server bất thường
-
-**Phần mềm lậu/crack:**
-- Tên chứa từ khóa: `kmspico`, `keygen`, `crack`, `activator`, `patch`...
-- Cài đặt từ đường dẫn đáng ngờ
-- Không có publisher + tên đáng ngờ
-- Crack process đang chạy real-time
-
----
-
-## 📁 Cấu trúc
+## 📁 Cấu trúc Thư mục
 
 ```
 📂 Tools Check Status PC/
-├── 📄 pc_checker.py      ← Source code chính (~600 dòng)
-├── ▶️  run.bat            ← Chạy thẳng (cần Python)
-├── 📦 build.bat           ← Đóng gói → dist\PC_Status_Checker.exe
+├── 📄 pc_checker.py      ← Source code hoàn chỉnh
+├── ▶️  run.bat            ← Khởi chạy nhanh
+├── 📦 build.bat           ← Đóng gói ra dist\PC_Status_Checker.exe
 ├── 📋 requirements.txt
 └── 📖 README.md
 ```
 
 ---
 
-## ⚙️ Yêu cầu hệ thống
-
-- **OS:** Windows 10 / 11
-- **Python:** 3.8+ (chỉ cần khi chạy bằng source code)
-- **Quyền:** Nên chạy với **Administrator** để kiểm tra bản quyền đầy đủ
-
----
-
-## ⚠️ Lưu ý
-
-- Tool này dùng để **kiểm tra, audit** — không phải antivirus
-- Một số phần mềm crack tinh vi có thể không bị phát hiện
-- KMS của **doanh nghiệp/trường học** (Volume License) có thể bị cảnh báo nhầm — bình thường
-- Kết quả chính xác nhất khi chạy với quyền **Administrator**
-
----
-
-Made with ❤️ — Python + tkinter
+## ⚙️ Yêu cầu Hệ thống
+- **Hệ điều hành:** Windows 10 / Windows 11 (64-bit hoặc 32-bit)
+- **Quyền hạn:** Nên mở bằng **Run as Administrator** để đọc đầy đủ các cảm biến phần cứng chuyên sâu.
